@@ -1,6 +1,5 @@
 package com.evbox.charging.config;
 
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.evbox.charging.model.ChargingSession;
+import com.evbox.charging.model.store.ChargingSessionStore;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +19,8 @@ public class ChargingSessionConfig {
 	
 	
 	@Bean(name = "ChargingSessionBean")
-	//private final Map<UUID, ChargingSession> sessions;
-	public Map<UUID, ChargingSession>  getChargingSessions() {
-		return new ConcurrentHashMap<UUID, ChargingSession>();
+	public ChargingSessionStore  getChargingSessions() {
+		return new ChargingSessionStore(new ConcurrentHashMap<UUID, ChargingSession>());
 	}
 
 }

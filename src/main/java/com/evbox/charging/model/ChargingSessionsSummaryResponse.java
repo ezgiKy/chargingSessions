@@ -1,17 +1,20 @@
 package com.evbox.charging.model;
 
+import lombok.Value;
+
+@Value
 public class ChargingSessionsSummaryResponse {
-	
-    private int totalCount;
 
-    private int startedCount;
+	private long totalCount;
 
-    private int stoppedCount;
+	private long startedCount;
 
-    public ChargingSessionsSummaryResponse(int startedCount, int stoppedCount) {
-        this.startedCount = startedCount;
-        this.stoppedCount = stoppedCount;
-        this.totalCount = startedCount + stoppedCount;
-    }	
+	private long stoppedCount;
+
+	public ChargingSessionsSummaryResponse(long startedCount, long stoppedCount) {
+		this.startedCount = startedCount;
+		this.stoppedCount = stoppedCount;
+		this.totalCount = startedCount + stoppedCount;
+	}
 
 }

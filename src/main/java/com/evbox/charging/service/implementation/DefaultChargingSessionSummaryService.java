@@ -1,29 +1,21 @@
 package com.evbox.charging.service.implementation;
 
-import java.util.Map;
-import java.util.UUID;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.evbox.charging.config.ChargingSessionConfig;
-import com.evbox.charging.model.ChargingSession;
 import com.evbox.charging.model.ChargingSessionsSummaryResponse;
+import com.evbox.charging.model.Status;
+import com.evbox.charging.model.store.ChargingSessionStore;
+import com.evbox.charging.service.ChargingSessionSummaryService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class DefaultChargingSessionSummaryService {
-	
-	private final Map<UUID, ChargingSession> sessions;
+@RequiredArgsConstructor
+public class DefaultChargingSessionSummaryService implements ChargingSessionSummaryService {
 
-	public DefaultChargingSessionSummaryService() {
-		ApplicationContext context = new AnnotationConfigApplicationContext(ChargingSessionConfig.class);
-		sessions = (Map<UUID, ChargingSession>) context.getBean("ChargingSessionBean");
-
-	}
+	private final ChargingSessionStore sessionStore;
 
 	/**
 	 * Retrieves sessions summary for the last minute. Time complexity is O(n).
@@ -32,7 +24,13 @@ public class DefaultChargingSessionSummaryService {
 	 */
 	public ChargingSessionsSummaryResponse retrieveSummary() {
 
-		return new ChargingSessionsSummaryResponse(sessions.size(), sessions.size());
+		long startedCount = sessionStore.getSessions().values().stream()
+				.filter(s -> s.getStatus() == Status.IN_PROGRESS).count();
+
+		long stoppedCount = sessionStore.getSessions().values().stream()
+				.filter(s -> s.getStatus() == Status.FINISHED).count();
+		
+		return new ChargingSessionsSummaryResponse(startedCount, stoppedCount);
 	}
 
 }
