@@ -1,5 +1,8 @@
 package com.evbox.charging.service.implementation;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
 import com.evbox.charging.model.ChargingSessionsSummaryResponse;
@@ -17,6 +20,8 @@ public class DefaultChargingSessionSummaryService implements ChargingSessionSumm
 
 	private final ChargingSessionStore sessionStore;
 
+	private static final Duration MIN = Duration.ofMinutes(1L);
+
 	/**
 	 * Retrieves sessions summary for the last minute. Time complexity is O(n).
 	 *
@@ -24,13 +29,15 @@ public class DefaultChargingSessionSummaryService implements ChargingSessionSumm
 	 */
 	public ChargingSessionsSummaryResponse retrieveSummary() {
 
+		LocalDateTime oneMinBefore = LocalDateTime.now().minus(MIN);
+
 		long startedCount = sessionStore.getSessions().values().stream()
-				.filter(s -> s.getStatus() == Status.IN_PROGRESS).count();
+				.filter(s -> (s.getStatus() == Status.IN_PROGRESS && s.getStartedAt().isAfter(oneMinBefore))).count();
 
 		long stoppedCount = sessionStore.getSessions().values().stream()
-				.filter(s -> s.getStatus() == Status.FINISHED).count();
-		
-		return new ChargingSessionsSummaryResponse(startedCount, stoppedCount);
+				.filter(s -> (s.getStatus() == Status.FINISHED && s.getStoppedAt().isAfter(oneMinBefore))).count();
+
+		return new ChargingSessionsSummaryResponse(startedCount + stoppedCount, startedCount, stoppedCount);
 	}
 
 }

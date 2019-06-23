@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class ChargingSessionRequest {
 
-	@NotNull
 	@NotBlank
 	private String stationId;
 

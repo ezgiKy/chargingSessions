@@ -16,7 +16,7 @@ public class ChargingSessionsResponse {
 
 	    private Status status;
 
-	    public static ChargingSessionsResponse from(final ChargingSession chargingSession) {
+	    public static ChargingSessionsResponse of(final ChargingSession chargingSession) {
 	        return new ChargingSessionsResponse(chargingSession.getId(),
 	                chargingSession.getStationId(),
 	                chargingSession.getUpdatedAt(),

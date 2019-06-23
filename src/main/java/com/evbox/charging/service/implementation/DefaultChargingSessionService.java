@@ -24,12 +24,21 @@ public class DefaultChargingSessionService implements ChargingSessionService {
 
 	private final ChargingSessionStore sessionStore;
 
-
 	@Override
-	public List<ChargingSessionsResponse> retrieveAll() {
-		System.out.println(sessionStore.getSessions().values().stream().count());
-		return sessionStore.getSessions().values().stream().map(ChargingSessionsResponse::from)
-				.collect(Collectors.toList());
+	public ChargingSessionsResponse submit(String stationId) {
+		final LocalDateTime startedAt = LocalDateTime.now();
+		final UUID uuid = UUID.randomUUID();
+
+		final ChargingSession chargingSession = new ChargingSession();
+		chargingSession.setId(uuid);
+		chargingSession.setStationId(stationId);
+		chargingSession.setStartedAt(startedAt);
+		chargingSession.setUpdatedAt(startedAt);
+		chargingSession.setStatus(Status.IN_PROGRESS);
+
+		sessionStore.getSessions().put(uuid, chargingSession);
+
+		return ChargingSessionsResponse.of(chargingSession);
 	}
 
 	@Override
@@ -46,24 +55,14 @@ public class DefaultChargingSessionService implements ChargingSessionService {
 		chargingSession.setUpdatedAt(stoppedAt);
 		chargingSession.setStoppedAt(stoppedAt);
 
-		return ChargingSessionsResponse.from(chargingSession);
+		return ChargingSessionsResponse.of(chargingSession);
 	}
 
 	@Override
-	public ChargingSessionsResponse submit(String stationId) {
-		final LocalDateTime startedAt = LocalDateTime.now();
-		final UUID uuid = UUID.randomUUID();
-
-		final ChargingSession chargingSession = new ChargingSession();
-		chargingSession.setId(uuid);
-		chargingSession.setStationId(stationId);
-		chargingSession.setStartedAt(startedAt);
-		chargingSession.setUpdatedAt(startedAt);
-		chargingSession.setStatus(Status.IN_PROGRESS);
-
-		sessionStore.getSessions().put(uuid, chargingSession);
-
-		return ChargingSessionsResponse.from(chargingSession);
+	public List<ChargingSessionsResponse> retrieveAll() {
+		System.out.println(sessionStore.getSessions().values().stream().count());
+		return sessionStore.getSessions().values().stream().map(ChargingSessionsResponse::of)
+				.collect(Collectors.toList());
 	}
 
 }

@@ -9,17 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import com.evbox.charging.model.ChargingSession;
 import com.evbox.charging.model.store.ChargingSessionStore;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
 @Configuration
-@RequiredArgsConstructor
-@Data
-public class ChargingSessionConfig {
+public class ChargingSessionStoreConfig {
 	
 	
-	@Bean(name = "ChargingSessionBean")
-	public ChargingSessionStore  getChargingSessions() {
+	@Bean
+	public ChargingSessionStore chargingSessionStore() {
 		return new ChargingSessionStore(new ConcurrentHashMap<UUID, ChargingSession>());
 	}
 
