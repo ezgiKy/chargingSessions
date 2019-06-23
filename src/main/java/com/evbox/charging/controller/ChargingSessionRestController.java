@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.evbox.charging.model.ChargingSessionRequest;
 import com.evbox.charging.model.ChargingSessionsResponse;
+import com.evbox.charging.model.ChargingSessionsSummaryResponse;
 import com.evbox.charging.service.ChargingSessionService;
+import com.evbox.charging.service.ChargingSessionSummaryService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +30,7 @@ public class ChargingSessionRestController {
 
 	private final ChargingSessionService chargingSessionService;
 	
-//	private final ChargingSessionSummaryService chargingSessionSummaryService;
+	private final ChargingSessionSummaryService chargingSessionSummaryService;
 
 	@PostMapping("/chargingSession")
 	public ResponseEntity<ChargingSessionsResponse> createChargingSession(
@@ -49,9 +51,9 @@ public class ChargingSessionRestController {
 		return ok().body(chargingSessionService.retrieveAll());
 	}
 
-//	@GetMapping("/chargingSessions/summary")
-//	public ResponseEntity<ChargingSessionsSummaryResponse> getSessionsSummary() {
-//		return ok().body(chargingSessionSummaryService.retrieveSummary());
-//	}
+	@GetMapping("/chargingSessions/summary")
+	public ResponseEntity<ChargingSessionsSummaryResponse> getSessionsSummary() {
+		return ok().body(chargingSessionSummaryService.retrieveSummary());
+	}
 
 }

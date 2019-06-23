@@ -6,31 +6,36 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.evbox.charging.config.ChargingSessionConfig;
 import com.evbox.charging.exception.DataNotFoundException;
 import com.evbox.charging.model.ChargingSession;
 import com.evbox.charging.model.ChargingSessionsResponse;
 import com.evbox.charging.model.Status;
-import com.evbox.charging.model.factory.ChargingSessionFactory;
 import com.evbox.charging.service.ChargingSessionService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class DefaultChargingSessionService implements ChargingSessionService {
 
-	private final ChargingSessionFactory chargingSessionfactory;
+	private final Map<UUID, ChargingSession> sessions;
 
-	// private final Map<UUID, ChargingSession> sessions;
+	public DefaultChargingSessionService() {
+	 ApplicationContext context = new AnnotationConfigApplicationContext(ChargingSessionConfig.class);
+	 sessions = (Map<UUID, ChargingSession>) context.getBean("ChargingSessionBean");
+	 
+	}
 
 	@Override
 	public List<ChargingSessionsResponse> retrieveAll() {
-		System.out.println(chargingSessionfactory.getSessions().values().stream().count());
-		return chargingSessionfactory.getSessions().values().stream().map(ChargingSessionsResponse::from)
+		System.out.println(sessions.values().stream().count());
+		return sessions.values().stream().map(ChargingSessionsResponse::from)
 				.collect(Collectors.toList());
 	}
 
@@ -38,7 +43,7 @@ public class DefaultChargingSessionService implements ChargingSessionService {
 	public ChargingSessionsResponse stop(final String id) {
 		final UUID uuid = UUID.fromString(id);
 
-		final ChargingSession chargingSession = chargingSessionfactory.getSessions().values().stream()
+		final ChargingSession chargingSession = sessions.values().stream()
 				.filter(s -> (uuid.equals(s.getId()) && s.getStatus() == Status.IN_PROGRESS)).findAny()
 				.orElseThrow(() -> new DataNotFoundException("There is no in progress session with id: " + id));
 
@@ -63,7 +68,7 @@ public class DefaultChargingSessionService implements ChargingSessionService {
 		chargingSession.setUpdatedAt(startedAt);
 		chargingSession.setStatus(Status.IN_PROGRESS);
 
-		chargingSessionfactory.getSessions().put(uuid, chargingSession);
+		sessions.put(uuid, chargingSession);
 
 		return ChargingSessionsResponse.from(chargingSession);
 	}
