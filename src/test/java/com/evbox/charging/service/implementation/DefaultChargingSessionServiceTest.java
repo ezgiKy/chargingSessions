@@ -1,6 +1,7 @@
 package com.evbox.charging.service.implementation;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import com.evbox.charging.exception.DataNotFoundException;
 import com.evbox.charging.model.ChargingSession;
@@ -53,31 +53,13 @@ public class DefaultChargingSessionServiceTest {
 	@DisplayName("Test submit a charging session with given stationId")
 	public void testSubmitChargingSession() {
 
-		// given
-		final UUID uuid = UUID.randomUUID();
-
-		final ChargingSession chargingSession = new ChargingSession();
-		chargingSession.setId(uuid);
-		chargingSession.setStationId(stationId1);
-		chargingSession.setStartedAt(now);
-		chargingSession.setUpdatedAt(now);
-		chargingSession.setStatus(Status.IN_PROGRESS);
-
-		chargingSessionStore.getSessions().put(uuid, chargingSession);
-
-		ChargingSessionsResponse chargingSessionsResponse = new ChargingSessionsResponse(uuid, stationId1, now,
-				Status.IN_PROGRESS);
-
-		ChargingSessionsResponse expectedResponse = ReflectionTestUtils.invokeMethod(chargingSessionsResponse, "of",
-				chargingSession);
-
 		// when
 		ChargingSessionsResponse actualResponse = defaultChargingSessionService.submit(stationId1);
 
 		// then
-		assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
-		assertEquals(expectedResponse.getStationId(), actualResponse.getStationId());
-		assertEquals(expectedResponse.getUpdatedAt(), actualResponse.getUpdatedAt());
+		assertEquals(Status.IN_PROGRESS, actualResponse.getStatus());
+		assertEquals(stationId1, actualResponse.getStationId());
+		assertThat(actualResponse.getId(), notNullValue());
 
 	}
 
@@ -132,9 +114,9 @@ public class DefaultChargingSessionServiceTest {
 		Map<UUID, ChargingSession> sessions = new ConcurrentHashMap<>();
 
 		ChargingSession chargingSession = new ChargingSession();
-		
+
 		UUID uuid = UUID.randomUUID();
-		
+
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId1);
 		chargingSession.setStartedAt(now);

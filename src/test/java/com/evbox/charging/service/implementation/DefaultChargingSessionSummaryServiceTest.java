@@ -125,6 +125,7 @@ public class DefaultChargingSessionSummaryServiceTest {
 		uuid = UUID.randomUUID();
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId2);
+		chargingSession.setStartedAt(twoMinBefore);
 		chargingSession.setStoppedAt(now);
 		chargingSession.setUpdatedAt(now);
 		chargingSession.setStatus(Status.FINISHED);
@@ -134,6 +135,7 @@ public class DefaultChargingSessionSummaryServiceTest {
 		uuid = UUID.randomUUID();
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId3);
+		chargingSession.setStartedAt(twoMinBefore);
 		chargingSession.setStoppedAt(now);
 		chargingSession.setUpdatedAt(now);
 		chargingSession.setStatus(Status.FINISHED);
@@ -170,6 +172,7 @@ public class DefaultChargingSessionSummaryServiceTest {
 		ChargingSession chargingSession = new ChargingSession();
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId1);
+		chargingSession.setStartedAt(twoMinBefore);
 		chargingSession.setStoppedAt(now);
 		chargingSession.setUpdatedAt(now);
 		chargingSession.setStatus(Status.FINISHED);
@@ -178,6 +181,7 @@ public class DefaultChargingSessionSummaryServiceTest {
 		chargingSession = new ChargingSession();
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId2);
+		chargingSession.setStartedAt(twoMinBefore);
 		chargingSession.setStoppedAt(now);
 		chargingSession.setUpdatedAt(now);
 		chargingSession.setStatus(Status.FINISHED);
@@ -222,6 +226,7 @@ public class DefaultChargingSessionSummaryServiceTest {
 		chargingSession = new ChargingSession();
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId2);
+		chargingSession.setStartedAt(twoMinBefore);
 		chargingSession.setStoppedAt(twoMinBefore);
 		chargingSession.setUpdatedAt(twoMinBefore);
 		chargingSession.setStatus(Status.FINISHED);
@@ -266,14 +271,16 @@ public class DefaultChargingSessionSummaryServiceTest {
 		chargingSession = new ChargingSession();
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId2);
+		chargingSession.setStartedAt(twoMinBefore);
 		chargingSession.setStoppedAt(twoMinBefore);
 		chargingSession.setUpdatedAt(twoMinBefore);
 		chargingSession.setStatus(Status.FINISHED);
 		sessions.put(UUID.randomUUID(), chargingSession);
-		
+
 		chargingSession = new ChargingSession();
 		chargingSession.setId(uuid);
 		chargingSession.setStationId(stationId3);
+		chargingSession.setStartedAt(twoMinBefore);
 		chargingSession.setStoppedAt(now);
 		chargingSession.setUpdatedAt(now);
 		chargingSession.setStatus(Status.FINISHED);

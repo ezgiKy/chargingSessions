@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +20,10 @@ import com.evbox.charging.model.ChargingSessionsSummaryResponse;
 import com.evbox.charging.service.ChargingSessionService;
 import com.evbox.charging.service.ChargingSessionSummaryService;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 
-@Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ChargingSessionRestController {
 
 	private final ChargingSessionService chargingSessionService;

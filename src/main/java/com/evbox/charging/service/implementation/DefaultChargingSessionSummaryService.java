@@ -47,7 +47,7 @@ public class DefaultChargingSessionSummaryService implements ChargingSessionSumm
 
 	private long countStarted(LocalDateTime oneMinBefore) {
 		return sessionStore.getSessions().values().stream()
-				.filter(s -> (s.getStatus() == Status.IN_PROGRESS && s.getStartedAt().isAfter(oneMinBefore))).count();
+				.filter(s -> (s.getStartedAt().isAfter(oneMinBefore))).count();
 	}
 
 }

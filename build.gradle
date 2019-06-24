@@ -33,7 +33,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation('org.junit.jupiter:junit-jupiter:5.4.2')
 	testCompile('org.mockito:mockito-junit-jupiter:2.23.4')
-	//testImplementation('org.junit.platform:junit-platform-launcher:1.4.1')
 }
 
 test {
