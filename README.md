@@ -1,4 +1,4 @@
-# Coding assignment for back-end engineer
+# Coding assignment for Everon EVBox
 
 * Prerequisites
   * Basic java knowledge, along with experience in OOP, API design, testing frameworks, and understanding of basic algorithms and data structures is a necessary prerequisite for taking this test.
@@ -6,12 +6,15 @@
   * We ask you to implement an application which represents a store for car charging session entities. It will hold all records in memory and provide REST API.
   * Each entity of the store represents unique charging session that can be in progress or finished. Entity can have the following fields:
 
+
+```bash
   * UUID id;
   * String stationId;
   * LocalDateTime startedAt;
   * LocalDateTime stoppedAt;
   * LocalDateTime updatedAt;
   * StatusEnum status;
+```
 
 ## Endpoints to implement
 
@@ -28,9 +31,8 @@ O(log(n))
 "ABC-12345"
 }
 
-{
-
   * Response body
+{
 "id":
 "d9bb7458-d5d9-4de7-87f7-7f39edd51d18",
 "stationId": "ABC-12345",
