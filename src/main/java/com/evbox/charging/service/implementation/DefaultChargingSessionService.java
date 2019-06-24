@@ -38,6 +38,8 @@ public class DefaultChargingSessionService implements ChargingSessionService {
 
 		sessionStore.getSessions().put(uuid, chargingSession);
 
+		log.info("Session started in station " + stationId);
+
 		return ChargingSessionsResponse.of(chargingSession);
 	}
 
@@ -55,12 +57,12 @@ public class DefaultChargingSessionService implements ChargingSessionService {
 		chargingSession.setUpdatedAt(stoppedAt);
 		chargingSession.setStoppedAt(stoppedAt);
 
+		log.info("Session stopped with id " + id);
 		return ChargingSessionsResponse.of(chargingSession);
 	}
 
 	@Override
 	public List<ChargingSessionsResponse> retrieveAll() {
-		System.out.println(sessionStore.getSessions().values().stream().count());
 		return sessionStore.getSessions().values().stream().map(ChargingSessionsResponse::of)
 				.collect(Collectors.toList());
 	}

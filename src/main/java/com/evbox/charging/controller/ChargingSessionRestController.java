@@ -33,14 +33,14 @@ public class ChargingSessionRestController {
 	
 	private final ChargingSessionSummaryService chargingSessionSummaryService;
 
-	@PostMapping("/chargingSession")
+	@PostMapping("/chargingSessions")
 	public ResponseEntity<ChargingSessionsResponse> createChargingSession(
 			@RequestBody @Valid ChargingSessionRequest request) {
 		return ok().body(chargingSessionService.submit(request.getStationId()));
 
 	}
 
-	@PutMapping("/chargingSession/{id}")
+	@PutMapping("/chargingSessions/{id}")
 	public ResponseEntity<ChargingSessionsResponse> stopChargingSession(@PathVariable String id) {
 
 		return ok().body(chargingSessionService.stop(id));

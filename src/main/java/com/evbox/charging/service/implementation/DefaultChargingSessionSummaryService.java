@@ -31,13 +31,23 @@ public class DefaultChargingSessionSummaryService implements ChargingSessionSumm
 
 		LocalDateTime oneMinBefore = LocalDateTime.now().minus(MIN);
 
-		long startedCount = sessionStore.getSessions().values().stream()
-				.filter(s -> (s.getStatus() == Status.IN_PROGRESS && s.getStartedAt().isAfter(oneMinBefore))).count();
+		long startedCount = countStarted(oneMinBefore);
 
-		long stoppedCount = sessionStore.getSessions().values().stream()
-				.filter(s -> (s.getStatus() == Status.FINISHED && s.getStoppedAt().isAfter(oneMinBefore))).count();
+		long stoppedCount = countStopped(oneMinBefore);
+		
+		log.info("Charging session summary calculated as started: " + startedCount + " stopped: " + stoppedCount + ".");
 
 		return new ChargingSessionsSummaryResponse(startedCount + stoppedCount, startedCount, stoppedCount);
+	}
+
+	private long countStopped(LocalDateTime oneMinBefore) {
+		return sessionStore.getSessions().values().stream()
+				.filter(s -> (s.getStatus() == Status.FINISHED && s.getStoppedAt().isAfter(oneMinBefore))).count();
+	}
+
+	private long countStarted(LocalDateTime oneMinBefore) {
+		return sessionStore.getSessions().values().stream()
+				.filter(s -> (s.getStatus() == Status.IN_PROGRESS && s.getStartedAt().isAfter(oneMinBefore))).count();
 	}
 
 }
